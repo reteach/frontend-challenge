@@ -37,33 +37,11 @@ const sortByUser = computed(() =>
     return acc;
   }, {})
 );
-console.log('📟 - sortByUser → ', sortByUser);
 
-const users = computed(() => {
-  const userMap = [];
-  images.value.forEach((img) => {
-    if (!userMap[img.userId]) {
-      userMap[img.userId] = [];
-    }
-    userMap[img.userId].push(img);
-  });
-  return userMap;
-});
-console.log('📟 - users → ', users);
-
-console.log('📟 - data → ', users);
-
-// const userIds = users.value.results.map((user) => user.login.uuid);
 if (error.value) {
   console.error('Failed to load images:', error.value);
 }
 </script>
-
-<!-- <script setup>
-const { data: photos } = await useFetch('/api/gallery');
-
-console.log('📟 - photos → ', photos.value);
-</script> -->
 
 <style scoped>
 .gallery {
