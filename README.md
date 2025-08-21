@@ -11,14 +11,15 @@ The website is not well-designed on purpose, but you don't have to work on this 
 ### 1. Responsiveness
 
 Change the current layout to bring some responsive behaviour. Only implement a single solution, but try to think of different solutions that could be used to achieve responsiveness.
+This will be discussed during the interview.
 
-### 2. SSR vs SPA
+**(Bonus)** Do not use media queries.
 
-Implement the call to get the user information when navigating to their profile using a [Nuxt built-in hook](https://nuxt.com/docs/4.x/getting-started/data-fetching).
-Use the following endpoint: <code>https://jsonplaceholder.typicode.com/users/{id}</code><br/>
-Display some information, but do not add too much styling.
+### 2. Todos
 
-Change the Nuxt configuration to behave in SPA (single-page-application) mode, and compare the behavior when previously using the SSR (server-side-rendering) mode.
+Navigate to the `/user/[id]` page and implement a filter for the user todo list to show only completed or pending tasks based on the checkboxes.
+
+**(Bonus)** Do not use JavaScript.
 
 ### 3. Page loading performance
 
@@ -28,20 +29,23 @@ Navigate to the `/gallery` page which contains a list of photos. This page is me
   <br/> Try to suggest something that the team can easily align on and let them find their own solutions to implement it.
   <br/> Optionally, include a brief code draft or example to illustrate how to begin applying your recommendation.
 
-- What would be your own top recommendations (max. 3) if you were responsible for optimizing the page? <br/> Implement a few of these recommendations directly in code, focusing on those you consider most impactful.
-
 ### 4. Architecture
 
 The Gallery currently fetches its data from `/api/gallery`, using a [Nuxt server route](https://nuxt.com/docs/guide/directory-structure/server#api-routes) which acts as a minimal Backend-for-Frontend (BFF).
 
 Improve the current implementation - but focus on making a decision for a quick first iteration.
-  You can choose one of the following approach as example:
-  - Continue with the current setup (BFF)
-  - Move the all logic into the client-side
-  - Use a static site generation (SSG) approach
-  - Any other approach that can simplify or quickly optimize the current implementation
+You can choose one of the following approach as example:
+
+- Continue with the current setup (BFF)
+- Move the all logic into the client-side
+- Use a static site generation (SSG) approach
+- Any other approach that can simplify or quickly optimize the current implementation
 
 **(Bonus)** Could Nuxt be used as a full backend? In what scenarios would that make sense, and what might be the limitations?
+
+### Testing
+
+Implement tests for the gallery and the todo list components
 
 ### (Bonus) Accessibility
 

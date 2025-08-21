@@ -10,7 +10,6 @@ html {
 
 body {
   font-family: Arial, sans-serif;
-  margin: 0;
 }
 
 header {
@@ -21,27 +20,42 @@ header {
   text-align: center;
 }
 
+.wrapper {
+  width: 100%;
+  white-space: nowrap;
+}
+
 nav {
+  display: inline-block;
+  vertical-align: top;
   background-color: #dbfbdb;
-  margin-bottom: 15px;
   padding: 10px;
+  height: 500px;
+  width: 20%;
 }
 
 main {
+  display: inline-block;
+  vertical-align: top;
   background-color: #e2eafc;
-  margin-bottom: 15px;
   padding: 20px;
+  width: 80%;
+
 }
 
 section {
+  display: inline-block;
+  vertical-align: top;
   background-color: #c1d3fe;
   padding: 15px;
-  margin-bottom: 15px;
+  margin: 15px;
 }
 
 article {
+  display: inline-block;
   background-color: #e0ffff;
   padding: 10px;
+  width: 100%;
 }
 
 aside {
