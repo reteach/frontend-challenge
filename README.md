@@ -134,9 +134,4 @@ bun run dev
 
 <p>
   <img src="assets/img/mobile/mobile_home_360x780.png" alt="mobile home 360x780" width="320" />
-  <img src="assets/img/mobile/mobile_home_filter_360x780.png" alt="mobile home 360x780"  width="320" hspace="10"  />
-</p>
-<p>
-  <img src="assets/img/mobile/mobile_home_footer_360x780.png" alt="mobile home footer 360x780"  width="320" />
-  <img src="assets/img/mobile/mobile_user_profile_360x780.png" alt="mobile user profile 360x780" width="320" hspace="10"  />
 </p>
