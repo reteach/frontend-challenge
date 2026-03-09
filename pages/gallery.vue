@@ -13,11 +13,9 @@
       >
         <hr v-if="index !== 0" />
         <h2>{{ userGallery.name }}</h2>
-        <template v-if="index === 0">
-          <p>Albums: {{ userGallery.stats?.albumCount }}</p>
-          <p>Posts: {{ userGallery.stats?.postCount }}</p>
-          <p>Comments: {{ userGallery.stats?.commentCount }}</p>
-        </template>
+        <p>Albums: {{ userGallery.stats?.albumCount }}</p>
+        <p>Posts: {{ userGallery.stats?.postCount }}</p>
+        <p>Comments: {{ userGallery.stats?.commentCount }}</p>
         <div class="gallery">
           <NuxtImg
             v-for="(img, i) in userGallery.photos"
