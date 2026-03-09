@@ -1,23 +1,38 @@
 <template>
   <div>
-    <h2>Gallery</h2>
-    <div v-if="pending">Loading…</div>
-    <div v-else-if="error">Error loading images: {{ error.message }}</div>
+    <h1>Gallery</h1>
+    <div v-if="pending" role="status" aria-live="polite">Loading…</div>
+    <div v-else-if="error" role="alert">
+      Error loading images: {{ error.message }}
+    </div>
     <div v-else>
       <div
-        v-if="Object.keys(sortByUser).length !== 0"
-        v-for="(userGallery, index) in Object.values(sortByUser)"
-        :key="index"
+        v-for="(userGallery, index) in allByUser"
+        :key="userGallery.userId"
+        class="user-section"
       >
         <hr v-if="index !== 0" />
         <h2>{{ userGallery.name }}</h2>
-        <p>Albums: {{ userGallery.albums.length }}</p>
-        <p>Posts: {{ userGallery.posts.length }}</p>
-        <p>Comments: {{ userGallery.comments.length }}</p>
+        <template v-if="index === 0">
+          <p>Albums: {{ userGallery.stats?.albumCount }}</p>
+          <p>Posts: {{ userGallery.stats?.postCount }}</p>
+          <p>Comments: {{ userGallery.stats?.commentCount }}</p>
+        </template>
         <div class="gallery">
-          <template v-for="img in userGallery.photos" :key="img.id">
-            <img :src="img.picture" :alt="img.title" class="photo" />
-          </template>
+          <NuxtImg
+            v-for="(img, i) in userGallery.photos"
+            :key="img.id"
+            :src="img.picture"
+            :alt="`Photo by ${img.userName}`"
+            :class="['photo', { shimmer: !loadedIds.has(img.id) }]"
+            :fetchpriority="index === 0 && i < 3 ? 'high' : 'auto'"
+            :loading="index === 0 && i < 3 ? 'eager' : 'lazy'"
+            decoding="async"
+            width="1200"
+            height="800"
+            sizes="(max-width: 600px) 300px, (max-width: 1200px) 600px, 1200px"
+            @load="loadedIds.add(img.id)"
+          />
         </div>
       </div>
     </div>
@@ -25,90 +40,57 @@
 </template>
 
 <script setup>
-const {
-  data: images,
-  pending,
-  error,
-} = await useFetch('/api/gallery', { lazy: true });
+const { data, pending, error } = useFetch('/api/gallery');
 
-const users = ref([]);
-onMounted(async () => {
-  users.value = await fetch('https://jsonplaceholder.typicode.com/users').then(
-    (res) => res.json()
+const loadedIds = reactive(new Set());
+
+const allByUser = computed(() => {
+  if (!data.value) return [];
+  const statsMap = Object.fromEntries(
+    data.value.stats.map((s) => [s.userId, s]),
   );
-
-  await loadUserStatistics();
-});
-
-const sortByUser = computed(() => {
-  if (!images.value || !users.value.length) {
-    return {};
-  }
-
-  return images.value.reduce((acc, img) => {
-    const user = users.value.find((u) => u.id === img.userId);
-    if (!user) {
-      return acc;
-    }
-    if (!acc[img.userId]) {
+  const map = data.value.photos.reduce((acc, img) => {
+    if (!acc[img.userId])
       acc[img.userId] = {
+        userId: img.userId,
         name: img.userName,
         photos: [],
-        albums: user.albums || [],
-        posts: user.posts || [],
-        comments: user.comments || [],
+        stats: statsMap[img.userId],
       };
-    }
     acc[img.userId].photos.push(img);
     return acc;
   }, {});
+  return Object.values(map);
 });
 
-/**
- * Load specific user statistics
- */
-async function loadUserStatistics() {
-  for (const user of users.value) {
-    (user.albums = []), (user.posts = []), (user.comments = []);
-
-    // Fetch user Albums
-    await fetch(`https://jsonplaceholder.typicode.com/users/${user.id}/albums`)
-      .then((res) => res.json())
-      .then((albums) => user.albums.push(...albums));
-
-    // Fetch user Posts
-    await fetch(`https://jsonplaceholder.typicode.com/users/${user.id}/posts`)
-      .then((res) => res.json())
-      .then((posts) => user.posts.push(...posts));
-
-    // Fetch user Comments
-    await fetch(
-      `https://jsonplaceholder.typicode.com/users/${user.id}/comments`
-    )
-      .then((res) => res.json())
-      .then((comments) => user.comments.push(...comments));
-  }
-}
-
-if (error.value) {
-  console.error('Failed to load images:', error.value);
-}
+watch(error, (err) => { if (err) console.error('Failed to load images:', err); });
 </script>
 
 <style scoped>
+.user-section {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 500px;
+}
 .gallery {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 1svw;
+  gap: 1vw;
 }
-.img-gallery {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+@keyframes shimmer {
+  0%,
+  100% {
+    background-color: #d1d5db;
+  }
+  50% {
+    background-color: #e5e7eb;
+  }
 }
 .photo {
   max-width: 100%;
   height: auto;
   object-fit: cover;
+}
+.shimmer {
+  animation: shimmer 1.5s ease-in-out infinite;
 }
 </style>

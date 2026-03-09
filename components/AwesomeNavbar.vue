@@ -1,12 +1,12 @@
 <template>
-  <nav>
+  <nav aria-label="Main navigation">
     Navigation
-    <ul>
-      <li><a href="/">Home</a></li>
+    <ol>
+      <li><NuxtLink to="/">Home</NuxtLink></li>
       <li><a href="/">Home 2</a></li>
       <li><a href="/">Home 3</a></li>
       <li><a href="/">Home 4</a></li>
-      <NuxtLink to="/gallery">Gallery</NuxtLink>
-    </ul>
+      <li><NuxtLink to="/gallery">Gallery</NuxtLink></li>
+    </ol>
   </nav>
 </template>

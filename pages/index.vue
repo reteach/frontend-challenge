@@ -1,5 +1,5 @@
 <template>
-  <AwesomeSection>
+  <AwesomeSection aria-label="Challenge overview">
     <details>
       <summary title="Click to view the challenge description">
         <strong>
@@ -11,7 +11,12 @@
       <ChallengeDescription />
     </details>
 
-    <img src="/img.png" alt="User avatar" height="300" />
+    <img
+      src="/img.png"
+      alt="Frontend challenge preview"
+      width="1280"
+      height="713"
+    />
   </AwesomeSection>
   <UsersList />
 </template>

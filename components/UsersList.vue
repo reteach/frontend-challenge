@@ -1,8 +1,16 @@
 <template>
-  <AwesomeSection>
-    <h2>Users List</h2>
-    <input type="text" placeholder="Search..." v-model="search" />
-    <ul>
+  <AwesomeSection aria-labelledby="users-list-heading">
+    <h2 id="users-list-heading">Users List</h2>
+    <input
+      id="user-search"
+      type="text"
+      placeholder="Search..."
+      v-model="search"
+      aria-label="Search users"
+    />
+    <p v-if="error" role="alert">Failed to load users.</p>
+    <p v-else-if="!users" aria-live="polite">Loading...</p>
+    <ul v-else>
       <li v-for="user in filteredUsers" :key="user.id">
         <NuxtLink :to="`/user/${user.id}`">
           <p>Name: {{ user.name }}</p>
@@ -16,19 +24,13 @@
 </template>
 
 <script setup>
-import { useAsyncData } from 'nuxt/app';
-
-const search = ref('');
-
-const filteredUsers = computed(() =>
-  users
-    ? users.value.filter((user) =>
-        user.name.toLowerCase().includes(search.value.toLowerCase())
-      )
-    : []
+const search = ref("");
+const { data: users, error } = useAsyncData("users", () =>
+  $fetch("https://jsonplaceholder.typicode.com/users"),
 );
-
-const { data: users } = useAsyncData(() =>
-  fetch('https://jsonplaceholder.typicode.com/users').then((res) => res.json())
-);
+const filteredUsers = computed(() => {
+  if (!users.value) return [];
+  const query = search.value.toLowerCase();
+  return users.value.filter((user) => user.name.toLowerCase().includes(query));
+});
 </script>

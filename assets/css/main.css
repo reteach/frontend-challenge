@@ -21,26 +21,27 @@ header {
 }
 
 .wrapper {
-  width: 100%;
-  white-space: nowrap;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
 }
 
 nav {
-  display: inline-block;
-  vertical-align: top;
   background-color: #dbfbdb;
   padding: 10px;
-  height: 500px;
-  width: 20%;
+  flex: 1 0 160px;
 }
 
 main {
-  display: inline-block;
-  vertical-align: top;
   background-color: #e2eafc;
   padding: 20px;
-  width: 80%;
+  flex: 4 0 300px;
+}
 
+aside {
+  background-color: #fffacd;
+  padding: 20px;
+  flex: 1 0 160px;
 }
 
 section {
@@ -58,14 +59,19 @@ article {
   width: 100%;
 }
 
-aside {
-  background-color: #fffacd;
-  padding: 20px;
-}
-
 footer {
   background-color: #fbd6d2;
   padding: 10px;
+}
+
+:focus-visible {
+  outline: 3px solid #0060df;
+  outline-offset: 2px;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
 }
 
 .challenge-tasks li::marker {
@@ -73,7 +79,7 @@ footer {
 }
 
 .challenge-tasks li[data]::marker {
-  content: '\26A0';
+  content: "\26A0";
   background: white;
   opacity: 0.01;
   font-size: 0;
