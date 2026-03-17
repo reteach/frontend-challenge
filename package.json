@@ -17,7 +17,9 @@
   "devDependencies": {
     "@nuxt/test-utils": "^3.19.2",
     "@vue/test-utils": "^2.4.6",
+    "axe-core": "^4.11.1",
     "happy-dom": "^18.0.1",
-    "vitest": "^3.2.4"
+    "vitest": "^3.2.4",
+    "vue-axe": "^3.1.2"
   }
 }
