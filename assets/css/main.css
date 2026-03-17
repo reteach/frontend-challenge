@@ -21,8 +21,12 @@ header {
 }
 
 .wrapper {
+  display: flex;
   width: 100%;
   white-space: nowrap;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 1rem;
 }
 
 nav {
@@ -30,17 +34,19 @@ nav {
   vertical-align: top;
   background-color: #dbfbdb;
   padding: 10px;
-  height: 500px;
-  width: 20%;
+  flex-grow: 1;
+  flex-basis: 10em;
 }
 
 main {
-  display: inline-block;
+  display: flex;
   vertical-align: top;
   background-color: #e2eafc;
   padding: 20px;
   width: 80%;
-
+  flex-grow: 3;
+  flex-basis: 60em;
+  flex-wrap: wrap;
 }
 
 section {
@@ -49,6 +55,7 @@ section {
   background-color: #c1d3fe;
   padding: 15px;
   margin: 15px;
+  overflow: hidden;
 }
 
 article {
@@ -61,6 +68,7 @@ article {
 aside {
   background-color: #fffacd;
   padding: 20px;
+  flex-basis: 70em;
 }
 
 footer {
@@ -73,7 +81,7 @@ footer {
 }
 
 .challenge-tasks li[data]::marker {
-  content: '\26A0';
+  content: "\26A0";
   background: white;
   opacity: 0.01;
   font-size: 0;

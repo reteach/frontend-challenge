@@ -4,8 +4,8 @@
     <AwesomeNavbar />
     <main>
       <slot />
+      <AwesomeSidebar />
     </main>
-    <AwesomeSidebar />
   </div>
   <AwesomeFooter />
 </template>

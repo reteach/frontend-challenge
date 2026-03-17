@@ -11,7 +11,12 @@
       <ChallengeDescription />
     </details>
 
-    <img src="/img.png" alt="User avatar" height="300" />
+    <img
+      src="/img.png"
+      alt="User avatar"
+      height="300"
+      style="max-width: 33rem"
+    />
   </AwesomeSection>
   <UsersList />
 </template>
