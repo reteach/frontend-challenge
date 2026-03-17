@@ -23,32 +23,48 @@
     </div>
   </div>
 </template>
+<!-- 
+
+Gallery performance possible directions:
+
+For images:
+- Since there are many images, page load time is not optimal
+- To improve performance on the asset level, we can use WebP and thumbnails to reduce size
+- We can lazy load the images and apply caching
+- We could implement virtualization and load only what's in the user's viewport
+- We could maybe consider SSG for this page, while considering the cost and load on the server.
+
+For requests:
+- We could try to get all users data together from initial request 
+- Implemented approach: use promise.race to get the initla result until all promises are finished.
+
+ -->
 
 <script setup>
 const {
   data: images,
   pending,
   error,
-} = await useFetch('/api/gallery', { lazy: true });
+} = await useFetch("/api/gallery", { lazy: true })
 
-const users = ref([]);
+const users = ref([])
 onMounted(async () => {
-  users.value = await fetch('https://jsonplaceholder.typicode.com/users').then(
+  users.value = await fetch("https://jsonplaceholder.typicode.com/users").then(
     (res) => res.json()
-  );
+  )
 
-  await loadUserStatistics();
-});
+  await loadUserStatistics()
+})
 
 const sortByUser = computed(() => {
   if (!images.value || !users.value.length) {
-    return {};
+    return {}
   }
 
   return images.value.reduce((acc, img) => {
-    const user = users.value.find((u) => u.id === img.userId);
+    const user = users.value.find((u) => u.id === img.userId)
     if (!user) {
-      return acc;
+      return acc
     }
     if (!acc[img.userId]) {
       acc[img.userId] = {
@@ -57,41 +73,36 @@ const sortByUser = computed(() => {
         albums: user.albums || [],
         posts: user.posts || [],
         comments: user.comments || [],
-      };
+      }
     }
-    acc[img.userId].photos.push(img);
-    return acc;
-  }, {});
-});
+    acc[img.userId].photos.push(img)
+    return acc
+  }, {})
+})
 
 /**
  * Load specific user statistics
  */
 async function loadUserStatistics() {
   for (const user of users.value) {
-    (user.albums = []), (user.posts = []), (user.comments = []);
+    ;(user.albums = []), (user.posts = []), (user.comments = [])
 
-    // Fetch user Albums
-    await fetch(`https://jsonplaceholder.typicode.com/users/${user.id}/albums`)
-      .then((res) => res.json())
-      .then((albums) => user.albums.push(...albums));
-
-    // Fetch user Posts
-    await fetch(`https://jsonplaceholder.typicode.com/users/${user.id}/posts`)
-      .then((res) => res.json())
-      .then((posts) => user.posts.push(...posts));
-
-    // Fetch user Comments
-    await fetch(
-      `https://jsonplaceholder.typicode.com/users/${user.id}/comments`
-    )
-      .then((res) => res.json())
-      .then((comments) => user.comments.push(...comments));
+    Promise.race([
+      fetch(`https://jsonplaceholder.typicode.com/users/${user.id}/albums`)
+        .then((res) => res.json())
+        .then((albums) => user.albums.push(...albums)),
+      fetch(`https://jsonplaceholder.typicode.com/users/${user.id}/posts`)
+        .then((res) => res.json())
+        .then((posts) => user.posts.push(...posts)),
+      fetch(`https://jsonplaceholder.typicode.com/users/${user.id}/comments`)
+        .then((res) => res.json())
+        .then((comments) => user.comments.push(...comments)),
+    ])
   }
 }
 
 if (error.value) {
-  console.error('Failed to load images:', error.value);
+  console.error("Failed to load images:", error.value)
 }
 </script>
 
