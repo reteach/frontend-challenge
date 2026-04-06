@@ -24,9 +24,8 @@
 <script setup>
 const route = useRoute();
 
-const { data: todos } = useAsyncData(() =>
-  fetch(
-    `https://jsonplaceholder.typicode.com/users/${route.params.id}/todos`
-  ).then((res) => res.json())
-);
+const { data: todos } = await useAsyncData(
+  'users',
+  (_nuxtApp, { signal }) => $fetch(`https://jsonplaceholder.typicode.com/users/${route.params.id}/todos`, { signal }),
+)
 </script>

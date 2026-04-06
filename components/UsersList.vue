@@ -28,7 +28,8 @@ const filteredUsers = computed(() =>
     : []
 );
 
-const { data: users } = useAsyncData(() =>
-  fetch('https://jsonplaceholder.typicode.com/users').then((res) => res.json())
-);
+const { data: users } = await useAsyncData(
+  'users',
+  (_nuxtApp, { signal }) => $fetch('https://jsonplaceholder.typicode.com/users', { signal }),
+)
 </script>
