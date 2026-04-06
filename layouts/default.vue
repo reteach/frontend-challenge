@@ -16,6 +16,7 @@
 .app-layout {
   display: grid;
   container-type: inline-size;
+  min-height: 100vh;
 }
 
 .app-grid {
