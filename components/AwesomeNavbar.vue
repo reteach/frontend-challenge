@@ -10,3 +10,12 @@
     </ul>
   </nav>
 </template>
+
+<style scoped>
+  nav {
+    display: inline-block;
+    vertical-align: top;
+    background-color: #dbfbdb;
+    padding: 10px;
+  }
+</style>
