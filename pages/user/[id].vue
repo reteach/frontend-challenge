@@ -4,6 +4,10 @@
     <form>
       Filters:
       <span>
+        <label for="change-multiple">All {{ allItemsChecked ? 'completed' : 'pending' }}</label>
+        <input v-model="allItemsChecked" id="change-multiple" type="checkbox" />
+      </span>
+      <span>
         <label for="status">Filter by Status</label>
         <select v-model="filters.status" id="status">
           <option value="">Default</option>
@@ -19,7 +23,7 @@
         </select>
       </span>
     </form>
-    <UserTodoList :todos="filteredTodos" />
+    <UserTodoList :todos="filteredTodos" @updateTodoStatus="updateTodoStatus" />
   </AwesomeArticle>
 </template>
 
@@ -45,4 +49,21 @@ const filteredTodos = computed(() => {
 
   return filterByStatus.slice(0, filters.limit);
 });
+
+const allItemsChecked = computed({
+  get: () => {
+    return filteredTodos.value.every(todo => todo.completed);
+  },
+  set: (value) => {
+    for (let i = 0; i < todos.value.length; i++) {
+      const todo = todos.value[i];
+      todo.completed = value;
+    }
+  }
+});
+
+const updateTodoStatus = (id: string, value: boolean) => {
+  const index = todos.value.findIndex(todo => todo.id === id);
+  todos.value[index].completed = value;
+};
 </script>
